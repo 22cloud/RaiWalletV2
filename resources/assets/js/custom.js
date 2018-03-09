@@ -355,7 +355,7 @@ $(document).ready(function(){
 		var label_txt2 = "";
 		if(accountObj.label !== undefined && accountObj.label != "")
 		{
-			label_txt = accountObj.label;
+			label_txt = accountObj.label.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
 			label_txt2 = '('+label_txt+') - ';
 		}
 		
@@ -373,7 +373,7 @@ $(document).ready(function(){
 		input.type = "text";
 		input.value = label_txt;
 		input.className += ' label-input';
-		input.placeholder = 'e.g.: RaiGames dep. address';
+		input.placeholder = 'e.g.: Savings address';
 		input.spellcheck = false;
 		var pencil = document.createElement('I');
 		pencil.setAttribute('aria-hidden', 'true');
@@ -510,7 +510,7 @@ $(document).ready(function(){
 		{
 			var acc = accs[i].account;
 			var bal = accs[i].balance;
-			var label = accs[i].label;
+			var label = accs[i].label.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
 			if(label == "")
 				$('select').find('.acc_select_'+acc).html(acc+' ('+(bal.over("1000000000000000000000000").toJSNumber() / 1000000).toFixed(6)+' NANO)');
 			else
@@ -917,6 +917,10 @@ $(document).ready(function(){
 	
 	function goToWallet()
 	{
+		// console warnings
+		console.log("%cSTOP!", "color:red; font-size:25px");
+		console.log("%cThis browser feature is intended for developers. If someone told you to copy-paste something here, it is a scam and will give them access to your money!", "font-size:21px");
+
 		// load wallet template
 		$('.landing').html('<div class="transition-overlay"><span>NANOWALLET</span><br/><i class="fa fa-circle-o-notch fa-spin fa-fw"></i><br/> <div class="fade-in_10s" style="padding: 20px;"><p>It seems like loading your wallet is taking a while... If you are not using Chrome or Firefox, please try with these.</p></div> </div>');
 		$(".modal").modal('hide');
@@ -1593,7 +1597,10 @@ $(document).ready(function(){
 	function addAccountToPaySelect(account)
 	{
 		if(account.label)
+		{
+			account.label = account.label.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
 			$('.pay-account-select').append('<option value="'+account.account+'"> '+(account.balance.over("1000000000000000000000000").toJSNumber() / 1000000).toFixed(6)+' NANO - '+account.label+' ('+account.account+')</option>');
+		}
 		else
 			$('.pay-account-select').append('<option value="'+account.account+'"> '+(account.balance.over("1000000000000000000000000").toJSNumber() / 1000000).toFixed(6)+' NANO - '+account.account+'</option>');
 	}

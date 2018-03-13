@@ -408,6 +408,22 @@ $(document).ready(function(){
 		var _2 = document.createElement('DIV');
 		_2.className += 'col-xs-12';
 		
+		var alias;
+		if(aliases[accountObj.account])
+		{
+			alias = document.createElement('code');
+			alias.className += ' alias-label';
+			let txt = document.createTextNode('@'+aliases[accountObj.account]);
+			alias.appendChild(txt);
+		}
+		else
+		{
+			alias = document.createElement('span');
+			alias.className += ' text-muted alias-label';
+			let txt = document.createTextNode('(no alias)');
+			alias.appendChild(txt);
+		}
+		alias.setAttribute('id', 'alias_'+accountObj.account);
 		var span = document.createElement('SPAN');
 		var txt = document.createTextNode(accountObj.account);
 		var link = document.createElement('a');
@@ -415,6 +431,7 @@ $(document).ready(function(){
 		link.setAttribute('target','_blank');
 		link.appendChild(txt);
 		span.appendChild(link);
+		_2.appendChild(alias);
 		_2.appendChild(span);
 		row.appendChild(_2);
 		li.appendChild(row);
@@ -445,6 +462,12 @@ $(document).ready(function(){
 		{
 			if(aliases[accs[i].account])
 			{
+				// accounts list on the right
+				let alias = document.createElement('code');
+				alias.className += ' alias-label';
+				let txt = document.createTextNode('@'+aliases[accs[i].account]);
+				alias.appendChild(txt);
+				$('#alias_'+accs[i].account).replaceWith(alias);
 				var a = aliases[accs[i].account];
 				var e = 
 				'<li class="alias-item col-md-12">'+
@@ -471,7 +494,7 @@ $(document).ready(function(){
                         '</div>'+
                     '</div>'+
                     '<div class="col-md-2 item-right">'+
-                        '<a class="btn btn-primary" href="https://www.nanode.co/account/'+accs[i].account+'" target="_blank">Claim!</a>'+
+                        '<a class="btn btn-primary" href="https://www.nanode.co/account/'+accs[i].account+'?claim=true" target="_blank">Claim!</a>'+
                     '</div>'+
                 '</li>';
 			}
@@ -1044,7 +1067,7 @@ $(document).ready(function(){
 			getPendingBlocks();
 			recheckWork();
 			checkReadyBlocks(); 
-			getAliases();
+			getAliases(loadAliases);
 			
 			var selected = wallet.getAccounts()[0].account;
 			var last = wallet.getLastNBlocks(selected, 20);
@@ -1298,27 +1321,24 @@ $(document).ready(function(){
 		$('#alias_address').css('display', 'none');
 		var to = $('#to').val().replace(' ', '');
 
-		if(to.indexOf('@') === 0) // paying to alias
+		if(to.length != 64) // its not an address
 		{
-			if(to.length > 3)
-			{
-				aliasExists(to, function(exists){
-					if(exists === false)
-					{
-						$('#to_helper_error').css('display', 'initial');
-						$('#to_helper').css('display', 'none');
-					}
-					else
-					{
-						$('#to').css('color', 'initial');
-						$('#to_helper').css('display', 'initial');
-						$('#to_helper_error').css('display', 'none');
-						$('#to').attr('data-alias-address', exists.alias+';'+exists.address);
-						$('#alias_address_input').val(exists.address);
-						$('#alias_address').fadeIn();
-					}
-				});
-			}
+			aliasExists(to, function(exists){
+				if(exists === false)
+				{
+					$('#to_helper_error').css('display', 'initial');
+					$('#to_helper').css('display', 'none');
+				}
+				else
+				{
+					$('#to').css('color', 'initial');
+					$('#to_helper').css('display', 'initial');
+					$('#to_helper_error').css('display', 'none');
+					$('#to').attr('data-alias-address', exists.alias+';'+exists.address);
+					$('#alias_address_input').val(exists.address);
+					$('#alias_address').fadeIn();
+				}
+			});
 		}
 		else
 		{
@@ -1343,8 +1363,7 @@ $(document).ready(function(){
 			refreshBalances();
 			sync();
 			getAliases(function(){
-				if(active == 'alias')
-					loadAliases();
+				loadAliases();
 			});
 			alertSuccess('New account added to wallet.');
 			wallet.useAccount(newAccount);

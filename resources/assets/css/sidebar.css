@@ -279,3 +279,7 @@
 #alias_address{
     display:none;
 }
+.alias-label{
+    display:inline-block;
+    margin-bottom:10px;
+}

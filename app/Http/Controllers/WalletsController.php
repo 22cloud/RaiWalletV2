@@ -324,16 +324,25 @@ class WalletsController extends Controller
             {
                 $a = Alias::where('account', $account)->first();
                 if($a)
-                    $aliases[] = array($a->account => $a->alias);
+                    $aliases[$a->account] = $a->alias;
             }
             return $this->success(['aliases' => $aliases]);
         }
         return $this->error('Invalid parameters');
     }
 
-    public function getSimilarAliases(Request $request)
+    public function getAliasInfo(Request $request)
     {
-
+        $request->alias = str_replace('@', '', $request->alias);
+        if(!ctype_alnum($request->alias))
+            return $this->error('Invalid alias');
+        $alias = Alias::where('alias', $request->alias)->first();
+        if(!$alias)
+            return $this->success(['found' => false]);
+        $ret['found'] = true;
+        $ret['alias'] = $alias->alias;
+        $ret['address'] = $alias->account;
+        return $this->success($ret);
     }
     
     public function getPending(Request $request)

@@ -230,18 +230,20 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="password">To</label>
-                            <input type="text" name="to" id="to" class="form-control" placeholder="Receiving account" required />
+                            <label for="recipient">To <span class="text-muted small">(nano address or @alias)</span></label>
+                            <div style="position:relative">
+                                <input type="text" name="to" id="to" class="form-control" placeholder="Receiving account" autocomplete="off" required />
+                                <span id="to_helper" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                                <span id="to_helper_error" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                            </div>
+                        </div>
+                        <div class="form-group" id="alias_address">
+                            <input type="text" id="alias_address_input" class="form-control" readonly />
                         </div>
                         <div class="form-group">
                             <label for="amount">Amount (Nano)</label>
                             <input type="text" name="amount" id="samount" class="form-control" placeholder="e.g.: 10.5" required />
                         </div>
-                        <!--
-                        <div class="form-group">
-                            <input type="checkbox" name="pow" checked > <a data-toggle="tooltip" data-placement="top" title="Check to generate the PoW needed for the block at RaiWallet servers. It is recommended if you are on a mobile device, if you have to send and receive many blocks or if you are in a rush.">Get PoW remotely</a>
-                        </div>
-                        -->
                         <div class="form-group">
                             <input type="submit" name="send" class="form-control btn btn-primary" value="Send" />
                         </div>

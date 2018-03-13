@@ -243,3 +243,39 @@
 .buttons a, .buttons button{
     margin-top:10px;
 }
+
+.alias-list{
+    list-style-type: none;
+    padding:0;
+}
+.alias-item{
+    border: solid 1px #eee;
+    padding: 5px;
+    border-radius: 5px;
+    -moz-box-shadow: inset 0 0 7px #eeeeee;
+    -webkit-box-shadow: inset 0 0 7px #eeeeee;
+    box-shadow: inset 0 0 7px #eeeeee;
+    margin:2px;
+}
+.item-right{
+    padding:12px;
+    text-align:center;
+}
+.alias-text{
+    margin-bottom:0px;
+}
+.alias-address{
+    margin-bottom:5px;
+    word-wrap: break-word;
+}
+#to_helper{
+    display:none;
+    color:#3c763d;
+}
+#to_helper_error{
+    display:none;
+    color: #a94442;
+}
+#alias_address{
+    display:none;
+}

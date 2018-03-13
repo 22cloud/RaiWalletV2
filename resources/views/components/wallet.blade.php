@@ -15,7 +15,7 @@
                     <a href="#" id="gtxs"><i class="fa fa-exchange" aria-hidden="true" style="display:inline"></i> Transactions</a>
                 </li>
                 <li>
-                    <a href="#" id="gtxs"><i class="fa fa-id-badge" aria-hidden="true" style="display:inline"></i> Alias</a>
+                    <a href="#" id="galias"><i class="fa fa-id-badge" aria-hidden="true" style="display:inline"></i> Alias</a>
                 </li>
                 <li>
                     <a href="#" id="gsettings"><i class="fa fa-cogs" aria-hidden="true" style="display:inline"></i> Settings</a>
@@ -171,6 +171,21 @@
                                     <input type="submit" name="autologout" class="btn btn-primary" />
                                 </div>
                             </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aliases -->
+                <div class="row aliases" style="display:none">
+                    <div class="col-md-12">
+                        <div class="col-md-12">
+                            <h3>Your aliases</h3>
+                            <p>
+                                You can link your addresses to aliases using Nanode Alias. Make your address easier to find with a unique alias. With it you can receive payments from anyone in a simple manner.
+                                <br/><br/>
+                                Below you can see your addresses with their aliases. You can also claim an alias for the ones which don't have any yet:
+                            </p>
+                            <ul class="alias-list"></ul>
                         </div>
                     </div>
                 </div>

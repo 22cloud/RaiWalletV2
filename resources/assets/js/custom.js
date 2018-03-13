@@ -25,6 +25,7 @@ var localPow = true;
 var localPowWorking = false;
 var pow_workers;
 var identifier = "";
+var aliases = {};
 
 var RESOLVE_FORKS_BLOCK_BATCH_SIZE = 20;
 var RAI_TO_RAW = "000000000000000000000000";
@@ -186,6 +187,28 @@ $(document).ready(function(){
             });
         }
     });
+
+    $('#galias').click(function(event){
+    	event.preventDefault();
+    	if(active != 'alias')
+    	{
+    		$('.sidebar-nav .active').removeClass('active');
+    		$('#galias').parent().addClass('active');
+    		$('.current').fadeOut(500, function(){
+                $('.current').removeClass('current');
+                $('.aliases').fadeIn();
+                $('.aliases').addClass('current');
+                loadAliases();
+                if(!moving)
+                {
+                    window.history.pushState("aliases", "NanoWallet - Alias", "/alias");
+                    document.title = 'NanoWallet - Alias';
+                }
+                active = 'alias';
+                moving = false;
+            });
+    	}
+    })
     
     $('#gsecurity').click(function(event){
         event.preventDefault();
@@ -414,6 +437,48 @@ $(document).ready(function(){
 		$('#acc-select').append('<option>'+label_txt2+accountObj.account+'</option>');
 	}
 	
+	function loadAliases()
+	{
+		$('.alias-list').html('');
+		var accs = wallet.getAccounts();
+		for (let i in accs)
+		{
+			if(aliases[accs[i].account])
+			{
+				var a = aliases[accs[i].account];
+				var e = 
+				'<li class="alias-item col-md-12">'+
+                    '<div class="col-md-10">'+
+                        '<div class="col-md-12">'+
+                            '<code>@'+a+'</code>'+
+                        '</div>'+
+                        '<div class="col-md-12">'+
+                            '<p class="alias-address">'+accs[i].account+'</p>'+
+                        '</div>'+
+                    '</div>'+
+                '</li>';
+			}
+			else
+			{
+				var e = 
+				'<li class="alias-item col-md-12">'+
+                    '<div class="col-md-10">'+
+                        '<div class="col-md-12">'+
+                            '<p class="alias-text text-muted">(no alias)</p>'+
+                        '</div>'+
+                        '<div class="col-md-12">'+
+                            '<p class="alias-address">'+accs[i].account+'</p>'+
+                        '</div>'+
+                    '</div>'+
+                    '<div class="col-md-2 item-right">'+
+                        '<a class="btn btn-primary" href="https://www.nanode.co/account/'+accs[i].account+'" target="_blank">Claim!</a>'+
+                    '</div>'+
+                '</li>';
+			}
+			$('.alias-list').append($(e));
+		}
+	}
+
 	function showLabelInput(_1)
 	{
 		if($(_1).hasClass('hidden'))
@@ -884,7 +949,7 @@ $(document).ready(function(){
 		$.post('/wallet/getAccountsAliases', 'accs='+JSON.stringify(r), function(data){
 			if(data.status == 'success')
 			{
-				console.log(data);
+				aliases = data.aliases;
 			}
 			else
 			{
@@ -893,6 +958,23 @@ $(document).ready(function(){
 
 			if(callback != null)
 				callback();
+		});
+	}
+
+	function aliasExists(alias, callback)
+	{
+		$.post('/wallet/getAliasInfo', 'alias='+alias, function(data){
+			if(data.status == 'success')
+			{
+				if(data.found)
+				{
+					var exists = {alias: data.alias, address: data.address};
+					return callback(exists);
+				}
+				else
+					return callback(false);
+			}
+			return callback(false);
 		});
 	}
 	
@@ -1155,6 +1237,10 @@ $(document).ready(function(){
 		
 		// check address
 		var to = $('#to').val();
+		if(to.indexOf('@') === 0)
+		{
+			to = $('#to').attr('data-alias-address').split(';')[1];
+		}
 		try{
 			functions.keyFromAccount(to);
 		}catch(e){
@@ -1202,6 +1288,53 @@ $(document).ready(function(){
 		}
 		return false;
 	});
+
+	$('#to').on('keyup', checkToInput);
+	$('#to').change(checkToInput);
+
+	function checkToInput(){
+		$('#to').attr('data-alias-address', '');
+		$('#to_helper').css('display', 'none');
+		$('#alias_address').css('display', 'none');
+		var to = $('#to').val().replace(' ', '');
+
+		if(to.indexOf('@') === 0) // paying to alias
+		{
+			if(to.length > 3)
+			{
+				aliasExists(to, function(exists){
+					if(exists === false)
+					{
+						$('#to_helper_error').css('display', 'initial');
+						$('#to_helper').css('display', 'none');
+					}
+					else
+					{
+						$('#to').css('color', 'initial');
+						$('#to_helper').css('display', 'initial');
+						$('#to_helper_error').css('display', 'none');
+						$('#to').attr('data-alias-address', exists.alias+';'+exists.address);
+						$('#alias_address_input').val(exists.address);
+						$('#alias_address').fadeIn();
+					}
+				});
+			}
+		}
+		else
+		{
+			if(functions.parseXRBAccount(to))
+			{
+				$('#to').css('color', 'initial');
+				$('#to_helper').css('display', 'initial');
+				$('#to_helper_error').css('display', 'none');
+			}
+			else
+			{
+				$('#to_helper_error').css('display', 'initial');
+				$('#to_helper').css('display', 'none');
+			}
+		}
+	};
 	
 	$('#generate_acc').click(function(){
 		var newAccount = wallet.newKeyFromSeed();
@@ -1209,6 +1342,10 @@ $(document).ready(function(){
 		checkChains(function(){
 			refreshBalances();
 			sync();
+			getAliases(function(){
+				if(active == 'alias')
+					loadAliases();
+			});
 			alertSuccess('New account added to wallet.');
 			wallet.useAccount(newAccount);
 			updateReceiveQr(newAccount);

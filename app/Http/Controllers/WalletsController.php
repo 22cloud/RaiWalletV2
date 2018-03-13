@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Wallet;
 use App\PoW;
 use App\LegacyWallet;
+use App\Alias;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -311,6 +312,28 @@ class WalletsController extends Controller
             }
         }
         return $this->success($res);
+    }
+
+    public function getAliases(Request $request)
+    {
+        $aliases = [];
+        $accs = json_decode($request->accs);
+        if($accs)
+        {
+            foreach($accs as $account)
+            {
+                $a = Alias::where('account', $account)->first();
+                if($a)
+                    $aliases[] = array($a->account => $a->alias);
+            }
+            return $this->success(['aliases' => $aliases]);
+        }
+        return $this->error('Invalid parameters');
+    }
+
+    public function getSimilarAliases(Request $request)
+    {
+
     }
     
     public function getPending(Request $request)

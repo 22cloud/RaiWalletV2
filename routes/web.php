@@ -49,6 +49,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/wallet/sync', 'WalletsController@sync');
     Route::post('/wallet/broadcast', 'WalletsController@broadcast');
     Route::post('/wallet/rebroadcast', 'WalletsController@rebroadcast');
+
+    Route::post('/wallet/getAccountsAliases', 'WalletsController@getAliases');
     
     Route::get('/out', function(){
         Auth::logout();

@@ -15,6 +15,9 @@
                     <a href="#" id="gtxs"><i class="fa fa-exchange" aria-hidden="true" style="display:inline"></i> Transactions</a>
                 </li>
                 <li>
+                    <a href="#" id="gtxs"><i class="fa fa-id-badge" aria-hidden="true" style="display:inline"></i> Alias</a>
+                </li>
+                <li>
                     <a href="#" id="gsettings"><i class="fa fa-cogs" aria-hidden="true" style="display:inline"></i> Settings</a>
                 </li>
                 <li>

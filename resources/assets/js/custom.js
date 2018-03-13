@@ -873,6 +873,28 @@ $(document).ready(function(){
 			callback();
 		});
 	}
+
+	function getAliases(callback = null)
+	{
+		var accs = wallet.getAccounts();
+		var r = [];
+		for (let i in accs)
+			r.push(accs[i].account);
+
+		$.post('/wallet/getAccountsAliases', 'accs='+JSON.stringify(r), function(data){
+			if(data.status == 'success')
+			{
+				console.log(data);
+			}
+			else
+			{
+				console.warn('Failed to fetch wallet aliases.');
+			}
+
+			if(callback != null)
+				callback();
+		});
+	}
 	
 	function debugAllWallet()
 	{
@@ -940,6 +962,7 @@ $(document).ready(function(){
 			getPendingBlocks();
 			recheckWork();
 			checkReadyBlocks(); 
+			getAliases();
 			
 			var selected = wallet.getAccounts()[0].account;
 			var last = wallet.getLastNBlocks(selected, 20);

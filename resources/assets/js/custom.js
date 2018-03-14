@@ -1260,7 +1260,7 @@ $(document).ready(function(){
 		
 		// check address
 		var to = $('#to').val();
-		if(to.indexOf('@') === 0)
+		if(to.length != 64) // alias or invalid address
 		{
 			to = $('#to').attr('data-alias-address').split(';')[1];
 		}

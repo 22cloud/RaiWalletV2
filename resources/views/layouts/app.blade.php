@@ -98,6 +98,6 @@
             }
         });
     </script>
-    <script src="/js/custom.js"></script>
+    <script src="/js/custom.js?v=1.0.0"></script>
 </body>
 </html>

@@ -216,6 +216,7 @@ class WalletsController extends Controller
     
     public function imLoggedIn(Request $request)
     {
+        $return = [];
         if($request->loginKey)
         {
             $wallet = Wallet::where('identifier', $request->identifier)->first();
@@ -230,13 +231,29 @@ class WalletsController extends Controller
                 }
                 else
                 {
-                    return $this->error('Invalid login key.');
+                    return $this->error('Invalid login key. Please, refresh the page and clear your cache with ctrl+f5. If the problem persists contact us.');
                 }
             }
-            else 
+            else if($wallet->login_key_hash && !$wallet->login_key_enabled)
+            {
+                // check if login key is correct. If it is, lock login_key_enabled = 1 so login key cannot be changed again
+                // if it is incorrect, reset it and auth the user. Also, return a warning message asking to refresh
+                if(hash('sha256', $wallet->login_key_salt . $request->loginKey) == $wallet->login_key_hash)
+                {
+                    $wallet->login_key_enabled = 1;
+                }
+                else
+                {
+                    $wallet->login_key_hash = null;
+                    $wallet->login_key_enabled = 0;
+                    $return['warn'] = "Please clear your browser cache to get an updated version of the wallet code.";
+                }
+                $wallet->save();
+                Auth::login($wallet);
+            }
+            else
             {
                 // old wallet version, enable login key here
-                $wallet->login_key_enabled = 1;
                 $wallet->login_key_salt = substr(hash('sha256', rand(0,10000000 . time())), 0, 16);
                 $wallet->login_key_hash = hash('sha256', $wallet->login_key_salt . $request->loginKey);
                 if($request->wallet != 0) {
@@ -253,7 +270,7 @@ class WalletsController extends Controller
             return $this->error('Missing login key.');
         }
         
-        $return = ['msg' => 'Login successful'];
+        $return['msg'] = 'Login successful';
         
         // extract 2fa keys and stuff
         if($wallet->_2fa == 1)

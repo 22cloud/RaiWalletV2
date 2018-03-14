@@ -1118,6 +1118,10 @@ $(document).ready(function(){
 					_2fa_enabled = true;
 					_2fa_confirmed = true;
 				}
+				if(data2.warn)
+					setTimeout(function(){
+						alertWarning(data2.warn);
+					}, 5000);
 				if(callback)
 					callback();
 				else
@@ -1125,8 +1129,8 @@ $(document).ready(function(){
 			}
 			else
 			{
-				alertError(data.msg);
-				console.error(data.msg);
+				alertError(data2.msg);
+				console.error(data2.msg);
 			}
 		});
 	}

@@ -334,7 +334,7 @@ class WalletsController extends Controller
     public function getAliasInfo(Request $request)
     {
         $request->alias = str_replace('@', '', $request->alias);
-        if(!ctype_alnum(str_replace('_', '', $request->alias)))
+        if(!ctype_alnum(str_replace(['_', '-'], '', $request->alias)))
             return $this->error('Invalid alias');
         $alias = Alias::where('alias', $request->alias)->first();
         if(!$alias)

@@ -61,7 +61,7 @@
                     <div class="col-md-12">
                         <div class="col-md-6">
                             <h3>Pending Blocks </h3>
-                            <small style="color: #666;">Pending transactions will appear here</small>
+                            <div id='small_info_msg'><small  style="color: #666;">Pending transactions will appear below:</small></div>
                             <div class="recent">
                                 <ul>
 
@@ -71,6 +71,10 @@
                         
                         <div class="col-md-6">
                             <h3>Your account(s)</h3>
+                            <div id='small_info_msg'><small  style="color: #666;">These are your NANO accounts. You can have as many as you want.</small></div>
+                            <div class="form-group">
+                                <input type="button" name="acc_create" id="generate_acc" class="form-control btn btn-primary" value="Generate new Account" />
+                            </div>
                             <div class="accounts">
                                 <ul>
 

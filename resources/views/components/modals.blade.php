@@ -284,9 +284,6 @@
                             <div class="img img-responsive"></div>
                             <div class="qr-bot"></div>
                         </div>
-                        <div class="form-group">
-                            <input type="button" name="acc_create" id="generate_acc" class="form-control btn btn-primary" value="Generate new Account" />
-                        </div>
                     </form>
                 </div>
             </div>

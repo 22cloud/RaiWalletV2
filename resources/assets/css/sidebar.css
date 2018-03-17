@@ -194,7 +194,7 @@
     overflow-y:auto;
 }
 .recent ul, .accounts ul, .txs ul{
-    padding-left:5px;
+    padding-left:0px;
 }
 .txs{
     margin-top:20px;
@@ -281,4 +281,8 @@
 .alias-label{
     display:inline-block;
     margin-bottom:10px;
+}
+
+#small_info_msg{
+    padding-bottom:10px;
 }

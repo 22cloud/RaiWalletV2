@@ -142,9 +142,9 @@
                     </div>
                     <div class="col-md-12 b-line">
                         <div class="col-md-12">
-                            <h3>Change Alias</h3>
+                            <h3>Change NanoWallet Alias</h3>
                             <p>
-                                You can set an alias to login without having to copy the hex identifier every single time :P <br/>
+                                You can set an alias to login into nanowallet.io without having to copy the hex identifier every single time :P <br/>
                                 Once set it cannot be changed.
                             </p>
                             <form method="post" class="form-alias">
@@ -185,9 +185,9 @@
                         <div class="col-md-12">
                             <h3>Your aliases</h3>
                             <p>
-                                You can link your addresses to aliases using Nanode Alias. Make your address easier to find with a unique alias. With it you can receive payments from anyone in a simple manner.
+                                You can link your accounts to aliases using Nanode Alias. Make your account easier to find with a unique alias, which allows you to receive payments from anyone in a simple way.
                                 <br/><br/>
-                                Below you can see your addresses with their aliases. You can also claim an alias for the ones which don't have any yet:
+                                Below you can see your wallets accounts with their registered aliases. You can also claim an alias for the ones which don't have one yet:
                             </p>
                             <ul class="alias-list"></ul>
                         </div>

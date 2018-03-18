@@ -61,7 +61,7 @@
                     <div class="col-md-12">
                         <div class="col-md-6">
                             <h3>Pending Blocks </h3>
-                            <div id='small_info_msg'><small  style="color: #666;">Pending transactions will appear below:</small></div>
+                            <div id='small_info_msg'><small  style="color: #666;">Pending transactions will appear below.</small></div>
                             <div class="recent">
                                 <ul>
 
@@ -257,6 +257,9 @@
                                 <div class="form-group" id="qr_2fa"></div>
                                 <div class="form-group"><label id="2fa_key"></label></div>
                                 <div class="form-group" id="2fa_confirm" style="display:none">
+                                    <div class="alert alert-warning">
+                                        <p>Please keep a backup of the <b>2FA key</b> above in a safe location, in case anything happens to your 2FA device.</p>
+                                    </div>
                                     <label for="2facode">Enter 2fa code to confirm the action</label>
                                     <input type="text" name="2fa" id="2fa_confirm_input" class="form-control" placeholder="e.g.: 000000" />
                                 </div>

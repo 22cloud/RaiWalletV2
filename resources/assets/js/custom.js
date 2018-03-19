@@ -448,10 +448,10 @@ $(document).ready(function(){
 		});
 		
 		
-		$('#send-select').append('<option class="acc_select_'+accountObj.account+'">'+label_txt2+accountObj.account+' ('+(accountObj.balance / 1000000).toFixed(6)+' NANO)</option>');
-		$('#receive-select').append('<option class="acc_select_'+accountObj.account+'">'+label_txt2+accountObj.account+' ('+(accountObj.balance / 1000000).toFixed(6)+' NANO)</option>');
-		$('#change-select').append('<option>'+label_txt2+accountObj.account+'</option>');
-		$('#acc-select').append('<option>'+label_txt2+accountObj.account+'</option>');
+		$('#send-select').append('<option data-account="'+accountObj.account+'" class="acc_select_'+accountObj.account+'">'+label_txt2+accountObj.account+' ('+(accountObj.balance / 1000000).toFixed(6)+' NANO)</option>');
+		$('#receive-select').append('<option data-account="'+accountObj.account+'" class="acc_select_'+accountObj.account+'">'+label_txt2+accountObj.account+' ('+(accountObj.balance / 1000000).toFixed(6)+' NANO)</option>');
+		$('#change-select').append('<option data-account="'+accountObj.account+'">'+label_txt2+accountObj.account+'</option>');
+		$('#acc-select').append('<option data-account="'+accountObj.account+'">'+label_txt2+accountObj.account+'</option>');
 	}
 	
 	function loadAliases()
@@ -1258,7 +1258,7 @@ $(document).ready(function(){
 		var error = false;
 		
 		// from
-		var from = functions.parseXRBAccount($('#send-select').val());
+		var from = functions.parseXRBAccount($('#send-select option:selected').attr('data-account'));
 		if(from === false)
 			return alertError('Invalid origin address');
 		

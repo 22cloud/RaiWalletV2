@@ -494,7 +494,7 @@ $(document).ready(function(){
                         '</div>'+
                     '</div>'+
                     '<div class="col-md-2 item-right">'+
-                        '<a class="btn btn-primary" href="https://www.nanode.co/account/'+accs[i].account+'?claim=true" target="_blank">Claim!</a>'+
+                        /*'<a class="btn btn-primary" href="https://www.nanode.co/account/'+accs[i].account+'?claim=true" target="_blank">Claim!</a>'+*/
                     '</div>'+
                 '</li>';
 			}

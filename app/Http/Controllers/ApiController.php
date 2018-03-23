@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Custom\RaiNode;
+use App\TxTimestamp;
 
 class ApiController extends Controller
 {
-	protected function validateBlockHash($hash)
+    protected function validateBlockHash($hash)
     {
         if(strlen($hash) != 64)
             return false;
@@ -33,19 +34,32 @@ class ApiController extends Controller
 
     public function publicRebroadcast (Request $request)
     {
-    	$block = $request->block;
-    	$hash = $request->hash;
+        $block = $request->block;
+        $hash = $request->hash;
 
-    	$block = json_decode($block);
-    	if(!$block)
-    		return $this->error('Invalid block data');
-    	if(!$this->validateBlockHash($hash))
-    		return $this->error('Invalid block hash');
+        $block = json_decode($block);
+        if(!$block)
+            return $this->error('Invalid block data');
+        if(!$this->validateBlockHash($hash))
+            return $this->error('Invalid block hash');
 
-    	$node = new RaiNode();
-    	$res = $node->republish(['hash' => $hash]);
-    	if(isset($res['error']))
-    		$res = $node->process(['block' => $block]);
-    	return $this->success();
+        $node = new RaiNode();
+        $res = $node->republish(['hash' => $hash]);
+        if(isset($res['error']))
+            $res = $node->process(['block' => $block]);
+        return $this->success();
+    }
+
+    public function callbackHandle (Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        if(!$data)
+            return $this->error('Invalid json data');
+        $hash = $data['hash'];
+
+        $timestamp = new TxTimestamp();
+        $timestamp->hash = $hash;
+        $timestamp->save();
+        return $this->success();
     }
 }

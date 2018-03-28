@@ -185,9 +185,12 @@
                         <div class="col-md-12">
                             <h3>Your aliases</h3>
                             <p>
+                                Aliases will be coming back in the future, below is a list of your accounts with possible aliases:
+                                <!--
                                 You can link your accounts to aliases using Nanode Alias. Make your account easier to find with a unique alias, which allows you to receive payments from anyone in a simple way.
                                 <br/><br/>
                                 Below you can see your wallets accounts with their registered aliases. You can also claim an alias for the ones which don't have one yet:
+                                -->
                             </p>
                             <ul class="alias-list"></ul>
                         </div>

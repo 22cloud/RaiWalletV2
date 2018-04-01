@@ -23,11 +23,8 @@ class Alias extends Model
 				$to_insert = [];
 				for($i = $count; $i < count($aliases); $i++)
 				{
-					$to_insert[] = ['alias' => $aliases[$i]['alias'], 'account' => $aliases[$i]['account']];
+					Alias::firstOrCreate(['alias' => $aliases[$i]['alias'], 'account' => $aliases[$i]['account']]);
 				}
-
-				if(count($to_insert) > 0) // just in case
-					DB::table('aliases')->insert(array_reverse($to_insert));
 			}
 		}
 		else

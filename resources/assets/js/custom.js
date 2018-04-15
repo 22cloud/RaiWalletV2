@@ -941,7 +941,7 @@ $(document).ready(function(){
 					blocks.reverse();
 					for(let i in blocks)
 					{
-						var blk = new Block();
+						var blk = new Block(blocks[i].type == 'state');
 						blk.buildFromJSON(blocks[i].contents);
 						if(blocks[i].origin) blk.setOrigin(blocks[i].origin);
 						blk.setAccount(acc);
@@ -1309,7 +1309,8 @@ $(document).ready(function(){
 				addRecentSendToGui({date: "Just now", amount: amountRaw, hash: hash});
 				wallet.workPoolAdd(blk.getPrevious(), from, true);
 			}catch(e){
-				alertError('Ooops, something happened: ' + e.message);
+
+				alertError('Ooops, something happened: ' + e);
 			}
 				
 		}

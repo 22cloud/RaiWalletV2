@@ -735,7 +735,7 @@ $(document).ready(function(){
 		var obj = JSON.parse(json);
 		var hash = blk.getHash(true);
 		var guiHash;
-		if(blk.getType() == 'open' || blk.getType() == 'receive')
+		if(blk.getType() == 'open' || blk.getType() == 'receive' || blk.getType() == 'state')
 			guiHash = blk.getSource();
 		else
 			guiHash = blk.getHash(true);

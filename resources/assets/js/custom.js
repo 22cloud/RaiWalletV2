@@ -740,7 +740,7 @@ $(document).ready(function(){
 		var isStateAndReceiving = false;
 		if (blk.getType() == 'state')
 		{
-			wallet.useAccount(blk.getAccount()):
+			wallet.useAccount(blk.getAccount());
 			previousBalance = wallet.getBalanceUpToBlock(blk.getPrevious());
 			isStateAndReceiving = previousBalance.lesser(blk.getBalance());
 			isStateAndSending = previousBalance.greater(blk.getBalance());

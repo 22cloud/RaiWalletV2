@@ -735,17 +735,32 @@ $(document).ready(function(){
 		var obj = JSON.parse(json);
 		var hash = blk.getHash(true);
 		var guiHash;
-		if(blk.getType() == 'open' || blk.getType() == 'receive' || blk.getType() == 'state')
+		var previousBalance;
+		var isStateAndSending = false;
+		var isStateAndReceiving = false;
+		if (blk.getType() == 'state')
+		{
+			wallet.useAccount(blk.getAccount()):
+			previousBalance = wallet.getBalanceUpToBlock(blk.getPrevious());
+			isStateAndReceiving = previousBalance.lesser(blk.getBalance());
+			isStateAndSending = previousBalance.greater(blk.getBalance());
+		}
+
+		if(blk.getType() == 'open' || blk.getType() == 'receive' || isStateAndReceiving )
 			guiHash = blk.getSource();
 		else
 			guiHash = blk.getHash(true);
 		
 		var am = 'false';
-		if(blk.getType() == 'send')
+		if(blk.getType() == 'send') 
 		{
 			// send the balance before the block to check if it matches
 			// just in case
 			am = blk.getBalance().plus(blk.getAmount()).toString();
+		}
+		else if (isStateAndSending)
+		{
+			am = previousBalance.toString();
 		}
 		
 		$.post('/wallet/broadcast', 'hash='+hash+"&data="+json+'&amount='+am, function(data){

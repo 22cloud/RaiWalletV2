@@ -1170,7 +1170,7 @@ $(document).ready(function(){
 			var email = $('#email').val();
 			var loginKey = wallet.getLoginKey();
 			$('input').prop('disabled', true);
-			$.post('/wallet/register', 'email='+encodeURIComponent(email)+'&wallet='+pack+'&loginKey='+loginKey, function(data){
+			$.post('/wallet/register', 'email='+encodeURIComponent(email)+'&wallet='+pack+'&loginKey='+loginKey+'&state=1', function(data){
 				if(data.status == 'success')
 				{
 					alertInfo('Wallet successfully registered.');
@@ -1202,7 +1202,7 @@ $(document).ready(function(){
 		var code = $('#2fa_login_code').val();
 		
 		$('input').prop('disabled', true);
-		$.post('/wallet/login', 'action=login&identifier='+wid+'&_2fa='+code+"&_2farequired="+_2fa_required, function(data){
+		$.post('/wallet/login', 'action=login&identifier='+wid+'&_2fa='+code+"&_2farequired="+_2fa_required+'&state=1', function(data){
 			
 			if(data.status == 'success')
 			{
@@ -1634,7 +1634,7 @@ $(document).ready(function(){
 				var loginKey = wallet.getLoginKey();
 				
 				$('input').prop('disabled', true);
-				$.post('/wallet/register', 'action=register&email='+encodeURIComponent(email)+'&wallet='+pack+'&loginKey='+loginKey, function(data){
+				$.post('/wallet/register', 'action=register&email='+encodeURIComponent(email)+'&wallet='+pack+'&loginKey='+loginKey+'&state=1', function(data){
 					
 					if(data.status == 'success')
 					{

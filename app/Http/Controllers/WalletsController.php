@@ -115,6 +115,8 @@ class WalletsController extends Controller
     
     public function register(Request $request)
     {  
+        if($request->state != 1)
+            return $this->error('Refresh the page with Ctrl+f5 to clear your cache and make sure you run state blocks compatible code.');
         $validation = $this->registrationValidator($request->all());
         if ($validation->fails()) 
         {  
@@ -137,6 +139,8 @@ class WalletsController extends Controller
     
     public function login(Request $request)
     {
+        if($request->state != 1)
+            return $this->error('Refresh the page with Ctrl+f5 to clear your cache and make sure you run state blocks compatible code.');
         $wallet = Wallet::where('identifier', $request->identifier)->orWhere('alias', $request->identifier)->first();
         if(!$wallet)
             return $this->error('Wallet not found. Are you introducing the correct identifier? A common mistake is introducing the email.');

@@ -309,14 +309,20 @@ class WalletsController extends Controller
             if(isset($frontiers[$account]))
             {
                 $chain = $node->chain(['block' => $frontiers[$account], 'count' => 500])['blocks'];
-                $blocks = $node->blocks_info(['hashes' => $chain])['blocks'];
+                $blocks = $node->blocks_info(['hashes' => $chain, 'source' => true])['blocks'];
                 $blocks2 = [];
                 foreach($blocks as $hash=>$data)
                 {
                     $contents = json_decode($data['contents'], true);
                     if($contents['type']=='open' || $contents['type']=='receive')
                     {
-                          $data['origin'] = $node->block_account(['hash'=>$contents['source']])['account'];
+                        $data['origin'] = $node->block_account(['hash'=>$contents['source']])['account'];
+                    }
+                    else if($contents['type'] == 'state')
+                    {
+                        // check if it's receiving
+                        if ($data['source_account'])
+                            $data['origin'] = $data['source_account'];
                     }
                     $blk = array_merge(['hash' => $hash], $data);
                     $blocks2[] = $blk;

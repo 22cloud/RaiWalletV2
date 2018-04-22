@@ -1445,7 +1445,17 @@ $(document).ready(function(){
 		else
 			var func = 'append';
 		
-		if(block.getType() != 'change')
+		var isStateChange = false;
+		var previousBalance;
+		if(block.getType() == 'state')
+		{
+			wallet.useAccount(block.getAccount());
+			previousBalance = wallet.getBalanceUpToBlock(block.getPrevious());
+			if (previousBalance.eq(block.getBalance()))
+				isStateChange = true;
+		}
+
+		if(block.getType() != 'change' && !isStateChange)
 		{
 			if(block.getType() == 'send')
 			{
@@ -1453,6 +1463,29 @@ $(document).ready(function(){
 				var fromto = 'To: ';
 				var symbol = '-';
 				var account = block.getDestination();
+			}
+			else if (block.getType() == 'state')
+			{
+				if (block.getBalance().lesser(previousBalance))
+				{
+					// is sending
+					var color = 'red';
+					var fromto = 'To: ';
+					var symbol = '-';
+					var account = block.getLinkAsAccount();
+				}
+				else if (block.getBalance().greater(previousBalance))
+				{
+					// is receiving
+					var color = 'green';
+					var fromto = 'From: ';
+					var symbol = '+';
+					var account = block.getOrigin();
+				}
+				else 
+				{
+					// pure change state block
+				}
 			}
 			else
 			{

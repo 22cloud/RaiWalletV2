@@ -91,7 +91,7 @@
                             <input type="password" name="pass" id="password" class="form-control" placeholder="Enter your password" required />
                         </div>
                         <div class="form-group" style="display:none" id="_2fa_input">
-                            <label for="2fa">Google Authenticator</label>
+                            <label for="2fa">Two-Factor Authentication (2FA) <a href="#" id="lost_2fa" class="import">Lost your 2FA?</a> </label> 
                             <input type="text" name="2fa" id="2fa_login_code" class="form-control" placeholder="" autocomplete="off"/>
                         </div>
                         <div class="form-group">

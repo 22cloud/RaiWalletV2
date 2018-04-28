@@ -252,7 +252,7 @@
                     </div>
                     <div class="col-md-12 b-line">
                         <div class="col-md-12">
-                            <h3>2 Factor Authentication</h3>
+                            <h3>Two-Factor Authentication (2FA)</h3>
                             <p>
                                 Increase your wallet security adding 2FA (Google authenticator, Authy, etc.).
                             </p>

@@ -19,6 +19,14 @@ Route::domain('pay.nanowallet.io')->group(function () {
     });
 });
 
+Route::domain('ipauth.nanowallet.io')->group(function() {
+    Route::get('/{token}', ['as' => 'token', 'uses' => 'AuthorizedIpsController@auth']);
+    Route::post('/{token}', ['as' => 'token', 'uses' => 'AuthorizedIpsController@authApprove']);
+});
+
+Route::get('/authorizeIp/{token}', ['as' => 'token', 'uses' => 'AuthorizedIpsController@auth']);
+Route::post('/authorizeIp/{token}', ['as' => 'token', 'uses' => 'AuthorizedIpsController@authApprove']);
+
 Route::get('/', function () {
     return view('index');
 });

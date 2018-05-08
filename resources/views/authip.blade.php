@@ -52,6 +52,14 @@
                                                 </p>
                                             </div>
                                         </div>
+                                    @elseif($status == 'error')
+                                        <div class="col-xs-12">
+                                            <div class="alert alert-success">
+                                                <p>
+                                                    {{$msg}}
+                                                </p>
+                                            </div>
+                                        </div>
                                     @endif
                             </div>
                         </div>

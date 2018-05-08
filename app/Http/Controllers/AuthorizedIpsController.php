@@ -10,6 +10,7 @@ class AuthorizedIpsController extends Controller
 	public function error($msg)
 	{
 		// return error view
+		return view('authip')->with(['status' => 'error', 'msg' => $msg]);
 	}
 
 	protected function checkAuthToken($token)

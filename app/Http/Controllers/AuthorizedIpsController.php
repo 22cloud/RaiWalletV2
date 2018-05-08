@@ -31,9 +31,11 @@ class AuthorizedIpsController extends Controller
 
     	$current = new \stdClass();
     	$current->ip = $request->ip();
-    	$current->location = geoip($current->ip)['country'];
+        $location = geoip($current->ip);
+        $current->location = $location['country'] . ', ' . $location['state_name'];
 
-    	$attempt->location = geoip($attempt->ip)['country'];
+        $location = geoip($attempt->ip);
+        $attempt->location = $location['country'] . ', ' . $location['state_name'];
     	// return view with both ips
     	return view('authip')->with(['status' => 'info', 'current' => $current, 'attempt' => $attempt]);
     }

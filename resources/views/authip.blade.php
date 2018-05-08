@@ -54,7 +54,7 @@
                                         </div>
                                     @elseif($status == 'error')
                                         <div class="col-xs-12">
-                                            <div class="alert alert-success">
+                                            <div class="alert alert-danger">
                                                 <p>
                                                     {{$msg}}
                                                 </p>

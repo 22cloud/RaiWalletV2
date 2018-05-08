@@ -35,7 +35,7 @@ class Kernel extends ConsoleKernel
         })->everyFiveMinutes();
         $schedule->call(function(){
             \App\AuthorizedIp::updateExpired();
-        })->everyHour();
+        })->hourly();
     }
 
     /**

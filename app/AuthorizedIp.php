@@ -54,6 +54,6 @@ class AuthorizedIp extends Model
 
     public static function updateExpired ()
     {
-        AuthorizedIp::where('expires' '<', time())->delete();
+        AuthorizedIp::where('expires', '<', time())->delete();
     }
 }

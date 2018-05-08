@@ -6,6 +6,7 @@ use App\Wallet;
 use App\PoW;
 use App\LegacyWallet;
 use App\Alias;
+use App\AuthorizedIp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -16,6 +17,7 @@ use Detection\MobileDetect;
 use Mail;
 use \App\Mail\RegistrationMail;
 use App\Mail\RecoveryMail;
+use \App\Mail\AuthorizeIpMail;
 
 use App\Custom\RaiNode;
 
@@ -167,6 +169,16 @@ class WalletsController extends Controller
             {
                 return $this->success(['_2fa' => true]);
             }
+        }
+
+        if(!AuthorizedIp::isAuthorized($request->ip(), $wallet->id))
+        {
+            // send authorization mail
+            $attempt = AuthorizedIp::create($request, $wallet->id);
+            if (!$attempt)
+                return $this->error('Unexpected error. Please try again and if this issue persists contact us.');
+            Mail::to($wallet->email)->send(new AuthorizeIpMail($attempt));
+            return $this->error('We\'ve sent you an email to authorize the IP address trying to log in. If you have not received it check your spam folder.');
         }
         
         if(!$wallet->login_key_enabled)

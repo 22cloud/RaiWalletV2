@@ -21,14 +21,14 @@
                                     @if($status == 'info')
                                         <div class="col-xs-12">
                                             <div class="alert alert-info">
-                                                Check that you recognize both IP addresses and locations. <b>Do not authorize</b> this login attempt if the IP address trying to log in looks suscipious or you do not recognize it.
+                                                Check that you recognize both IP addresses and locations. <b>Do not authorize</b> this login attempt if the IP address trying to log in looks suspicious or you do not recognize it.
                                             </div>
                                         </div>
                                         <div class="col-xs-6">
                                             <h4>Login IP:</h4>
                                             <p>
                                                 <code>{{$attempt->ip}}</code> <br/>
-                                                This is the ip trying to login to your wallet. It is from <b>{{$attempt->location}}</b>.
+                                                This is the IP trying to login into your wallet. It is from <b>{{$attempt->location}}</b>.
                                             </p>
                                         </div>
                                         <div class="col-xs-6">
@@ -48,7 +48,7 @@
                                         <div class="col-xs-12">
                                             <div class="alert alert-success">
                                                 <p>
-                                                    This IP address has been successfully authorized. Try to log in again.
+                                                    This IP address has been successfully authorized. <a href="https://nanowallet.io/"><b>You can now proceed to login.</b></a> 
                                                 </p>
                                             </div>
                                         </div>

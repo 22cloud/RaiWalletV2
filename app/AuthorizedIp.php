@@ -41,4 +41,14 @@ class AuthorizedIp extends Model
     		return $aip;
     	}
     }
+
+    public static function updateExpiration ($ip, $wallet_id)
+    {
+        $aip = AuthorizedIp::where('wallet_id', $wallet_id)->where('ip', $ip->first();
+        if ($aip)
+        {
+            $aip->expires = time() + 3600 * 24 * 30;
+            $aip->save();
+        }
+    }
 }

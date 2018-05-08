@@ -16,9 +16,9 @@ class AuthorizeIpMail extends Mailable
      *
      * @return void
      */
-    public function __construct($ip)
+    public function __construct($authorizedIpModel)
     {
-        $this->ip = $ip;
+        $this->authorizedIpModel = $authorizedIpModel;
     }
 
     /**
@@ -31,6 +31,6 @@ class AuthorizeIpMail extends Mailable
         return $this->view('emails.ipAuth')
                     ->from('support@nanowallet.io', 'NanoWallet Support')
                     ->subject('Authorize new IP')
-                    ->with(['ipAttempt' => $this->ip]);
+                    ->with(['authorizedIpModel' => $this->authorizedIpModel]);
     }
 }

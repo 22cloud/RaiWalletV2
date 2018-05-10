@@ -1346,7 +1346,6 @@ $(document).ready(function(){
 		}
 		else
 		{
-			console.log(functions.parseXRBAccount(to));
 			if(functions.parseXRBAccount(to))
 			{
 				$('#to').css('color', 'initial');

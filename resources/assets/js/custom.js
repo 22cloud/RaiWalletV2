@@ -1264,7 +1264,7 @@ $(document).ready(function(){
 		
 		// check address
 		var to = $('#to').val();
-		if(to.length != 64) // alias or invalid address
+		if(to.length != 64 && to.length != 65) // alias or invalid address
 		{
 			to = $('#to').attr('data-alias-address').split(';')[1];
 		}
@@ -1325,7 +1325,7 @@ $(document).ready(function(){
 		$('#alias_address').css('display', 'none');
 		var to = $('#to').val().replace(' ', '');
 
-		if(to.length != 64) // its not an address
+		if(to.length != 64 && to.length != 65) // its not an address
 		{
 			aliasExists(to, function(exists){
 				if(exists === false)
@@ -1346,6 +1346,7 @@ $(document).ready(function(){
 		}
 		else
 		{
+			console.log(functions.parseXRBAccount(to));
 			if(functions.parseXRBAccount(to))
 			{
 				$('#to').css('color', 'initial');

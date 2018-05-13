@@ -11,7 +11,7 @@
 
         It seems that you are trying to log in to your wallet with a new IP address. You can authorize it with the link below:<br/><br/>
         
-        <a href="https://ipauth.nanowallet.io/{{ $authorizedIpModel->rand_id }}">https://ipauth.nanowallet.io/{{ $authorizedIpModel->rand_id }}</a>
+        <a clicktracking="off" href="https://ipauth.nanowallet.io/{{ $authorizedIpModel->rand_id }}">https://ipauth.nanowallet.io/{{ $authorizedIpModel->rand_id }}</a>
         <br/><br/>
         Make sure you recognize the IP address trying to log in.
         <br/><br/>

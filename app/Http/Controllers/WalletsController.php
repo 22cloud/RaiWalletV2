@@ -171,18 +171,21 @@ class WalletsController extends Controller
             }
         }
 
-        if(!AuthorizedIp::isAuthorized($request->ip(), $wallet->id))
+        if($wallet->ipauth_enabled)
         {
-            // send authorization mail
-            $attempt = AuthorizedIp::create($request, $wallet->id);
-            if (!$attempt)
-                return $this->error('Unexpected error. Please try again and if this issue persists contact us.');
-            Mail::to($wallet->email)->send(new AuthorizeIpMail($attempt));
-            return $this->error('We\'ve sent you an email to authorize the IP address trying to log in. If you have not received it check your spam folder.');
-        }
+            if(!AuthorizedIp::isAuthorized($request->ip(), $wallet->id))
+            {
+                // send authorization mail
+                $attempt = AuthorizedIp::create($request, $wallet->id);
+                if (!$attempt)
+                    return $this->error('Unexpected error. Please try again and if this issue persists contact us.');
+                Mail::to($wallet->email)->send(new AuthorizeIpMail($attempt));
+                return $this->error('We\'ve sent you an email to authorize the IP address trying to log in. If you have not received it check your spam folder.');
+            }
 
-        // update authorized ip expiration time
-        AuthorizedIp::updateExpiration($request->ip(), $wallet->id);
+            // update authorized ip expiration time
+            AuthorizedIp::updateExpiration($request->ip(), $wallet->id);
+        }
         
         if(!$wallet->login_key_enabled)
         {

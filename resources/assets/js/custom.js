@@ -1313,6 +1313,7 @@ $(document).ready(function(){
 				refreshBalances();
 				$('#to').val('');
 				$('#samount').val('');
+				$('#to_helper').css('display', 'none');
 				$(".modal").modal('hide');
 				alertInfo("Transaction built successfully. Waiting for work ...");
 				addRecentSendToGui({date: "Just now", amount: amountRaw, hash: hash});

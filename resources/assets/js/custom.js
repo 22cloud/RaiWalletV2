@@ -1252,6 +1252,7 @@ $(document).ready(function(){
 	
 	$('.form-send').submit(function(event){
 		event.preventDefault();
+		$('#send-button').prop('disabled', true);
 		// reset field errors
 		$('#to').css('border-color', '#ccc');
 		$('#samount').css('border-color', '#ccc');
@@ -1260,7 +1261,10 @@ $(document).ready(function(){
 		// from
 		var from = functions.parseXRBAccount($('#send-select option:selected').attr('data-account'));
 		if(from === false)
+		{
+			$('#send-button').prop('disabled', false);
 			return alertError('Invalid origin address');
+		}
 		
 		// check address
 		var to = $('#to').val();
@@ -1273,6 +1277,7 @@ $(document).ready(function(){
 		}catch(e){
 			alertError('Invalid NANO address.');
 			$('#to').css('border-color', '#880000');
+			$('#send-button').prop('disabled', false);
 			error = true;
 		}
 		
@@ -1285,6 +1290,7 @@ $(document).ready(function(){
 		{
 			alertError('Invalid amount.');
 			$('#samount').css('border-color', '#880000');
+			$('#send-button').prop('disabled', false);
 			error = true;
 		}
 		
@@ -1294,6 +1300,7 @@ $(document).ready(function(){
 			console.log(amountRaw);
 			console.log(balance);
 			$('#samount').css('border-color', '#880000');
+			$('#send-button').prop('disabled', false);
 			error = true;
 		}
 		
@@ -1304,6 +1311,8 @@ $(document).ready(function(){
 				var hash = blk.getHash(true);
 				
 				refreshBalances();
+				$('#to').val('');
+				$('#samount').val('');
 				$(".modal").modal('hide');
 				alertInfo("Transaction built successfully. Waiting for work ...");
 				addRecentSendToGui({date: "Just now", amount: amountRaw, hash: hash});
@@ -1311,7 +1320,7 @@ $(document).ready(function(){
 			}catch(e){
 				alertError('Ooops, something happened: ' + e.message);
 			}
-				
+			$('#send-button').prop('disabled', false);
 		}
 		return false;
 	});

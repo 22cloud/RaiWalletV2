@@ -245,7 +245,7 @@
                             <input type="text" name="amount" id="samount" class="form-control" placeholder="e.g.: 10.5" required />
                         </div>
                         <div class="form-group">
-                            <input type="submit" name="send" class="form-control btn btn-primary" value="Send" />
+                            <input type="submit" id="send-button" name="send" class="form-control btn btn-primary" value="Send" />
                         </div>
                     </form>
                 </div>

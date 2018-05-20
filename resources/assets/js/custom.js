@@ -743,7 +743,7 @@ $(document).ready(function(){
 			wallet.useAccount(blk.getAccount());
 			previousBalance = wallet.getBalanceUpToBlock(blk.getPrevious());
 			isStateAndReceiving = previousBalance.lesser(blk.getBalance());
-			isStateAndSending = previousBalance.greater(blk.getBalance());
+			isStateAndSending = previousBalance.greaterOrEquals(blk.getBalance());
 		}
 
 		if(blk.getType() == 'open' || blk.getType() == 'receive' || isStateAndReceiving )

@@ -735,17 +735,32 @@ $(document).ready(function(){
 		var obj = JSON.parse(json);
 		var hash = blk.getHash(true);
 		var guiHash;
-		if(blk.getType() == 'open' || blk.getType() == 'receive')
+		var previousBalance;
+		var isStateAndSending = false;
+		var isStateAndReceiving = false;
+		if (blk.getType() == 'state')
+		{
+			wallet.useAccount(blk.getAccount());
+			previousBalance = wallet.getBalanceUpToBlock(blk.getPrevious());
+			isStateAndReceiving = previousBalance.lesser(blk.getBalance());
+			isStateAndSending = previousBalance.greater(blk.getBalance());
+		}
+
+		if(blk.getType() == 'open' || blk.getType() == 'receive' || isStateAndReceiving )
 			guiHash = blk.getSource();
 		else
 			guiHash = blk.getHash(true);
 		
 		var am = 'false';
-		if(blk.getType() == 'send')
+		if(blk.getType() == 'send') 
 		{
 			// send the balance before the block to check if it matches
 			// just in case
 			am = blk.getBalance().plus(blk.getAmount()).toString();
+		}
+		else if (isStateAndSending)
+		{
+			am = previousBalance.toString();
 		}
 		
 		$.post('/wallet/broadcast', 'hash='+hash+"&data="+json+'&amount='+am, function(data){
@@ -941,7 +956,7 @@ $(document).ready(function(){
 					blocks.reverse();
 					for(let i in blocks)
 					{
-						var blk = new Block();
+						var blk = new Block(blocks[i].type == 'state');
 						blk.buildFromJSON(blocks[i].contents);
 						if(blocks[i].origin) blk.setOrigin(blocks[i].origin);
 						blk.setAccount(acc);
@@ -1155,7 +1170,7 @@ $(document).ready(function(){
 			var email = $('#email').val();
 			var loginKey = wallet.getLoginKey();
 			$('input').prop('disabled', true);
-			$.post('/wallet/register', 'email='+encodeURIComponent(email)+'&wallet='+pack+'&loginKey='+loginKey, function(data){
+			$.post('/wallet/register', 'email='+encodeURIComponent(email)+'&wallet='+pack+'&loginKey='+loginKey+'&state=1', function(data){
 				if(data.status == 'success')
 				{
 					alertInfo('Wallet successfully registered.');
@@ -1187,7 +1202,7 @@ $(document).ready(function(){
 		var code = $('#2fa_login_code').val();
 		
 		$('input').prop('disabled', true);
-		$.post('/wallet/login', 'action=login&identifier='+wid+'&_2fa='+code+"&_2farequired="+_2fa_required, function(data){
+		$.post('/wallet/login', 'action=login&identifier='+wid+'&_2fa='+code+"&_2farequired="+_2fa_required+'&state=1', function(data){
 			
 			if(data.status == 'success')
 			{
@@ -1319,7 +1334,8 @@ $(document).ready(function(){
 				addRecentSendToGui({date: "Just now", amount: amountRaw, hash: hash});
 				wallet.workPoolAdd(blk.getPrevious(), from, true);
 			}catch(e){
-				alertError('Ooops, something happened: ' + e.message);
+
+				alertError('Ooops, something happened: ' + e);
 			}
 			$('#send-button').prop('disabled', false);
 		}
@@ -1439,7 +1455,17 @@ $(document).ready(function(){
 		else
 			var func = 'append';
 		
-		if(block.getType() != 'change')
+		var isStateChange = false;
+		var previousBalance;
+		if(block.getType() == 'state')
+		{
+			wallet.useAccount(block.getAccount());
+			previousBalance = wallet.getBalanceUpToBlock(block.getPrevious());
+			if (previousBalance.eq(block.getBalance()))
+				isStateChange = true;
+		}
+
+		if(block.getType() != 'change' && !isStateChange)
 		{
 			if(block.getType() == 'send')
 			{
@@ -1447,6 +1473,29 @@ $(document).ready(function(){
 				var fromto = 'To: ';
 				var symbol = '-';
 				var account = block.getDestination();
+			}
+			else if (block.getType() == 'state')
+			{
+				if (block.getBalance().lesser(previousBalance))
+				{
+					// is sending
+					var color = 'red';
+					var fromto = 'To: ';
+					var symbol = '-';
+					var account = block.getLinkAsAccount();
+				}
+				else if (block.getBalance().greater(previousBalance))
+				{
+					// is receiving
+					var color = 'green';
+					var fromto = 'From: ';
+					var symbol = '+';
+					var account = block.getOrigin();
+				}
+				else 
+				{
+					// pure change state block
+				}
 			}
 			else
 			{
@@ -1595,7 +1644,7 @@ $(document).ready(function(){
 				var loginKey = wallet.getLoginKey();
 				
 				$('input').prop('disabled', true);
-				$.post('/wallet/register', 'action=register&email='+encodeURIComponent(email)+'&wallet='+pack+'&loginKey='+loginKey, function(data){
+				$.post('/wallet/register', 'action=register&email='+encodeURIComponent(email)+'&wallet='+pack+'&loginKey='+loginKey+'&state=1', function(data){
 					
 					if(data.status == 'success')
 					{
